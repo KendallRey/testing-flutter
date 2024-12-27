@@ -20,13 +20,66 @@ class ListScreen extends StatelessWidget {
             return Center(child: Text('No data found'));
           }
           final users = snapshot.data!.docs;
-          return ListView.builder(
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            padding: EdgeInsets.all(8.0),
             itemCount: users.length,
             itemBuilder: (ctx, index) {
             var user = users[index];
-              return ListTile(
-                title: Text(user['name']),
-                subtitle: Text('Sample User'),
+              return Card(
+                color: Colors.blueAccent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('images/sample.png'),
+                          fit: BoxFit.cover,
+                        )
+                      ),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    user['name'],
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Text(
+                                    user['name'],
+                                    style: TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 16
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                
               );
             },
           );
