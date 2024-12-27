@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Environment Variables
+*.env
+firebase.json
+android/app/google-services.json
