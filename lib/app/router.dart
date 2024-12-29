@@ -12,15 +12,19 @@ import 'package:normal_list/features/list/presentation/screens/list_screen.dart'
 import 'package:normal_list/features/settings/presentation/screens/settings_screen.dart';
 
 class AppRoutes {
+
+  static const String id = ':id';
   static const String home = '/';
   static const String login = '/login';
   static const String settings = '/settings';
   static const String addListItem = '/add-list-item';
+  static const String viewListItem = '/view-list-item/$id';
 
   static const String titleHome = 'My List';
   static const String titleLogin = 'Login';
   static const String titleSettings = 'Settings';
   static const String titleAddListItem = 'Add List Item';
+  static const String titleViewListItem = 'View Item';
 
   static HashMap<String, int> indexes = HashMap<String, int>.from({
     AppRoutes.home: 0,
@@ -31,6 +35,7 @@ class AppRoutes {
     AppRoutes.home: AppRoutes.titleHome,
     AppRoutes.settings: AppRoutes.titleSettings,
     AppRoutes.addListItem: AppRoutes.titleAddListItem,
+    AppRoutes.viewListItem: AppRoutes.titleViewListItem,
   });
 
 }

@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:normal_list/app/core/model/model.dart';
+import 'package:normal_list/app/router.dart';
 import 'package:normal_list/features/list/data/list_item_model.dart';
 import 'package:normal_list/features/list/data/list_service.dart';
 
@@ -8,6 +11,12 @@ class ListScreen extends StatelessWidget {
 
   final User? user = FirebaseAuth.instance.currentUser;
   final ListService _listService = ListService();
+
+  void handleClickItem (BuildContext ctx, String id) async {
+    if(ctx.mounted){
+      ctx.push(AppRoutes.viewListItem.replaceAll(AppRoutes.id, id));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +42,7 @@ class ListScreen extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  
+                  handleClickItem(context, user[Model.idKey]);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
