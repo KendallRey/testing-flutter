@@ -6,6 +6,7 @@ class AppButton extends StatelessWidget {
   final double fontSize;
   final double width;
   final double height;
+  final bool disabled;
 
   const AppButton({
     super.key,
@@ -13,19 +14,20 @@ class AppButton extends StatelessWidget {
     required this.label,
     this.fontSize = 16.0,
     this.width = 200.0,
-    this.height = 40.0
+    this.height = 60.0,
+    this.disabled = false,
   });
   
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-            onPressed: onPressed,
+            onPressed: disabled ? null : onPressed,
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(width, height), // Set button size
                 textStyle: TextStyle(fontSize: fontSize), // Set the text size
               ),
-              child: Text(label),
+              child: disabled ? CircularProgressIndicator() : Text(label),
             );
   }
 }
