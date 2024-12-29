@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:normal_list/app/core/widgets/app_bar.dart';
 import 'package:normal_list/app/core/widgets/bottom_app_bar.dart';
 import 'package:normal_list/features/auth/presentation/screens/login_screen.dart';
+import 'package:normal_list/features/list/presentation/screens/add_list_item_screen.dart';
 import 'package:normal_list/features/list/presentation/screens/list_screen.dart';
 import 'package:normal_list/features/settings/presentation/screens/settings_screen.dart';
 
@@ -14,6 +15,12 @@ class AppRoutes {
   static const String home = '/';
   static const String login = '/login';
   static const String settings = '/settings';
+  static const String addListItem = '/add-list-item';
+
+  static const String titleHome = 'My List';
+  static const String titleLogin = 'Login';
+  static const String titleSettings = 'Settings';
+  static const String titleAddListItem = 'Add List Item';
 
   static HashMap<String, int> indexes = HashMap<String, int>.from({
     AppRoutes.home: 0,
@@ -21,8 +28,9 @@ class AppRoutes {
   });
 
   static HashMap<String, String> titles = HashMap<String, String>.from({
-    AppRoutes.home: 'My List',
-    AppRoutes.settings: 'Settings',
+    AppRoutes.home: AppRoutes.titleHome,
+    AppRoutes.settings: AppRoutes.titleSettings,
+    AppRoutes.addListItem: AppRoutes.titleAddListItem,
   });
 
 }
@@ -51,7 +59,8 @@ class AppRouter {
       ),
       ShellRoute(
         builder:(context, state, child) {
-          final String pageTitle = AppRoutes.titles[state.uri.toString()] ?? 'App';
+          final url = state.uri.toString();
+          final String pageTitle = AppRoutes.titles[url] ?? 'App';
           return Scaffold(
             appBar: MyAppBar(title: pageTitle),
             body: AnimatedSwitcher(
@@ -59,6 +68,10 @@ class AppRouter {
               child: child,
             ),
             bottomNavigationBar: MyBottomAppBar(),
+            floatingActionButton: url == AppRoutes.home ? FloatingActionButton(
+              onPressed: ()=>handleAddItem(context),
+              child: Icon(Icons.add),
+            ) : null,
           );
         },
         routes: [
@@ -71,9 +84,18 @@ class AppRouter {
             pageBuilder: (ctx, state) => AppRouter.customTransitionPage(SettingsScreen(), state),
           )
         ]),
-      
+      GoRoute(
+        path: AppRoutes.addListItem,
+        pageBuilder: (ctx, state) => AppRouter.customTransitionPage(AddListItemScreen(), state),
+      )
     ]
   );
+  
+  static void handleAddItem(BuildContext ctx) {
+    if(ctx.mounted){
+      ctx.push(AppRoutes.addListItem);
+    }
+  }
 
   static CustomTransitionPage customTransitionPage(Widget page, GoRouterState state){
     return CustomTransitionPage(

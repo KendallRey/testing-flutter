@@ -1,21 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:normal_list/features/list/data/list_item_model.dart';
+import 'package:normal_list/features/list/data/list_service.dart';
 
 class ListScreen extends StatelessWidget {
-  const ListScreen({super.key});
+  ListScreen({super.key});
+
+  final User? user = FirebaseAuth.instance.currentUser;
+  final ListService _listService = ListService();
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      stream: _listService.getUserItems(user!.uid),
       builder: (ctx, snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){
           return Center(child: CircularProgressIndicator());
         }
-        if(!snapshot.hasData || snapshot.data!.docs.isEmpty){
+        if(!snapshot.hasData || snapshot.data!.isEmpty){
           return Center(child: Text('No data found'));
         }
-        final users = snapshot.data!.docs;
+        final users = snapshot.data!;
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -52,11 +57,11 @@ class ListScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  user['name'],
+                                  user[ListItemModel.codeKey],
                                   style: Theme.of(context).textTheme.titleLarge,
                                 ),
                                 Text(
-                                  user['name'],
+                                  user[ListItemModel.titleKey],
                                   style: Theme.of(context).textTheme.labelLarge,
                                 )
                               ],
