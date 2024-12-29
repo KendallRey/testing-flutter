@@ -81,6 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(content: Text('Welcome to your list!'))
       );
+      await Future.delayed(Durations.medium1);
+      if(!ctx.mounted) return;
       ctx.go(AppRoutes.home);
     }
   }
@@ -109,17 +111,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                 ),
                 SizedBox(height: 20),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: rememberMe, onChanged: (bool? value) {
-                        setState(() {
-                          rememberMe = value ?? false;
-                        });
-                      }
-                    ),
-                    Text('Remember Me')
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      rememberMe = !rememberMe;
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: rememberMe, onChanged: (bool? value) {
+                          setState(() {
+                            rememberMe = value ?? false;
+                          });
+                        }
+                      ),
+                      Text('Remember Me')
+                    ],
+                  ),
                 ),
                 SizedBox(height: 40),
                 SizedBox(

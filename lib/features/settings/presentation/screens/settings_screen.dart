@@ -23,18 +23,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(title: 'Settings'),
-      bottomNavigationBar: MyBottomAppBar(),
-      body: Center(
-        child: ElevatedButton(
-              style: ButtonStyle(),
-                onPressed: () {
-                  handleLogout(context);
-                },
-                child: Text('Logout')
-              ),
-      ),
+    return Center(
+      child: ElevatedButton(
+        style: ButtonStyle(),
+          onPressed: () {
+            handleLogout(context);
+          },
+          child: Text('Logout')
+        ),
     );
   }
 }
