@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   final Color darkActionColor = Colors.deepOrange;
   final Color darkFocusedColor = Colors.yellow;
   final Color darkGenericColor = Colors.black;
+  final Color darkDisabledColor = Colors.blueGrey;
   final Color darkErrorColor = Colors.red;
   final Color darkErrorFocusColor = Colors.redAccent;
 
@@ -17,15 +18,19 @@ class MyApp extends StatelessWidget {
   final Color lightFocusedColor = Colors.cyan;
   final Color lightGenericColor = Colors.white;
 
+  WidgetStateProperty<Color?> stateColorBackgroundDarkMode(){
+    return WidgetStateProperty.resolveWith((state) {
+      if(state.contains(WidgetState.disabled)){
+        return darkDisabledColor;
+      }
+      return darkActionColor;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig:  AppRouter().router,
-      // routerDelegate: AppRouter().router.routerDelegate,
-      // routeInformationParser: AppRouter().router.routeInformationParser,
-      // routeInformationProvider: AppRouter().router.routeInformationProvider,
-
       theme: ThemeData.light().copyWith(
         primaryColor:  Colors.blue,
         appBarTheme: AppBarTheme(
@@ -66,25 +71,26 @@ class MyApp extends StatelessWidget {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: darkActionColor,
           unselectedItemColor: lightGenericColor,
-          // selectedIconTheme: IconThemeData(color: darkActionColor),
-          // selectedItemColor: darkActionColor,
-          // selectedLabelStyle: TextStyle(color: darkActionColor),
-          // showSelectedLabels: true,
-          // unselectedLabelStyle: TextStyle(color: darkActionColor),
           backgroundColor: darkActionColor
         ),
         checkboxTheme: CheckboxThemeData(
           checkColor: WidgetStateProperty.all(darkActionColor),
           fillColor: WidgetStateProperty.all(Colors.transparent),
-          // fillColor: WidgetStateProperty.all(darkActionColor),
           side: BorderSide(color: darkActionColor, width: 2),
         ),
         unselectedWidgetColor: darkActionColor,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: darkActionColor,
+        ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(darkActionColor),
+            backgroundColor: stateColorBackgroundDarkMode(),
             foregroundColor: WidgetStateProperty.all(lightGenericColor),
-          )
+          ),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: darkActionColor,
+          foregroundColor: lightGenericColor,
         ),
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
@@ -127,32 +133,4 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     home: Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('My List'),
-  //     ),
-  //     bottomNavigationBar: BottomAppBar(
-  //       shape: CircularNotchedRectangle(),
-  //       notchMargin: 6,
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //         children: [
-  //           IconButton(
-  //             icon: Icon(Icons.home),
-  //             onPressed: () {},
-  //           ),
-  //           IconButton(
-  //             icon: Icon(Icons.settings),
-  //             onPressed: () {},
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   ),
-  // );
-  // }
 }
