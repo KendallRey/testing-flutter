@@ -37,7 +37,21 @@ class ListService {
     }).toList());
   }
 
-  Future<ListItemModel?> getUserItem(String userId, String id) async {
+  Stream<ListItemModel?> getUserItem(String userId, String id) {
+    final documentReference = getUserListItems(userId).doc(id);
+    return documentReference.snapshots().map((snapshot) {
+      if(snapshot.exists){
+        return ListItemModel.fromMap(snapshot.data() as Map<String, dynamic>);
+      }
+      else {
+        return null;
+      }
+    }).handleError((error) {
+      return null;
+    });
+  }
+
+  Future<ListItemModel?> fetchUserItem(String userId, String id) async {
     try {
       isLoading = true;
       final documentReference = getUserListItems(userId).doc(id);

@@ -14,7 +14,7 @@ class ListScreen extends StatelessWidget {
 
   void handleClickItem (BuildContext ctx, String id) async {
     if(ctx.mounted){
-      ctx.push(AppRoutes.viewListItem.replaceAll(AppRoutes.id, id));
+      ctx.pushNamed(AppRoutes.viewListItemName, pathParameters: { AppRoutes.id: id });
     }
   }
 

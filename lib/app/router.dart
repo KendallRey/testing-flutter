@@ -9,16 +9,19 @@ import 'package:normal_list/app/core/widgets/bottom_app_bar.dart';
 import 'package:normal_list/features/auth/presentation/screens/login_screen.dart';
 import 'package:normal_list/features/list/presentation/screens/add_list_item_screen.dart';
 import 'package:normal_list/features/list/presentation/screens/list_screen.dart';
+import 'package:normal_list/features/list/presentation/screens/view_list_item_screen.dart';
 import 'package:normal_list/features/settings/presentation/screens/settings_screen.dart';
 
 class AppRoutes {
 
-  static const String id = ':id';
+  static const String id = 'id';
   static const String home = '/';
   static const String login = '/login';
   static const String settings = '/settings';
   static const String addListItem = '/add-list-item';
-  static const String viewListItem = '/view-list-item/$id';
+  static const String viewListItem = '/view-list-item';
+  static const String viewListItemName = 'view-list-item';
+  static const String viewListItemId = '/view-list-item/:${AppRoutes.id}';
 
   static const String titleHome = 'My List';
   static const String titleLogin = 'Login';
@@ -35,7 +38,7 @@ class AppRoutes {
     AppRoutes.home: AppRoutes.titleHome,
     AppRoutes.settings: AppRoutes.titleSettings,
     AppRoutes.addListItem: AppRoutes.titleAddListItem,
-    AppRoutes.viewListItem: AppRoutes.titleViewListItem,
+    AppRoutes.viewListItemId: AppRoutes.titleViewListItem,
   });
 
 }
@@ -92,6 +95,14 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.addListItem,
         pageBuilder: (ctx, state) => AppRouter.customTransitionPage(AddListItemScreen(), state),
+      ),
+      GoRoute(
+        name: AppRoutes.viewListItemName,
+        path: AppRoutes.viewListItemId,
+        pageBuilder: (ctx, state) {
+          final id = state.pathParameters[AppRoutes.id] ?? '';
+          return AppRouter.customTransitionPage(ViewListItemScreen(id: id), state);
+        },
       )
     ]
   );
