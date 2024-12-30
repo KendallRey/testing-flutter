@@ -1,11 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:normal_list/app/core/constants/preference_keys.dart';
+import 'package:normal_list/app/core/services/app_encryption.dart';
+import 'package:normal_list/app/core/services/app_provider.dart';
 import 'package:normal_list/app/core/utils/validators.dart';
 import 'package:normal_list/app/core/widgets/button.dart';
 import 'package:normal_list/app/core/widgets/text_form_field.dart';
 import 'package:normal_list/app/router.dart';
 import 'package:normal_list/features/auth/data/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController secretController = TextEditingController();
 
   final AuthService authService = AuthService();
   
@@ -34,9 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
   // Load remembered credentials
   Future<void> _loadRememberedCredentials() async {
     final prefs = await SharedPreferences.getInstance();
-    final email = prefs.getString('email');
-    final password = prefs.getString('password');
-    final isRemembered = prefs.getBool('rememberMe') ?? false;
+    final email = prefs.getString(PreferenceKeys.email);
+    final password = prefs.getString(PreferenceKeys.password);
+    final isRemembered = prefs.getBool(PreferenceKeys.rememberMe) ?? false;
 
     if(isRemembered && email != null && password != null){
       emailController.text = email;
@@ -50,14 +55,15 @@ class _LoginScreenState extends State<LoginScreen> {
   // Save credentials
   Future<void> _saveCredentials() async {
     final prefs = await SharedPreferences.getInstance();
+    
     if(rememberMe){
-      prefs.setString('email', emailController.text);
-      prefs.setString('password', passwordController.text);
-      prefs.setBool('rememberMe', true);
+      prefs.setString(PreferenceKeys.email, emailController.text);
+      prefs.setString(PreferenceKeys.password, passwordController.text);
+      prefs.setBool(PreferenceKeys.rememberMe, true);
     } else {
-      prefs.remove('email');
-      prefs.remove('password');
-      prefs.setBool('rememberMe', false);
+      prefs.remove(PreferenceKeys.email);
+      prefs.remove(PreferenceKeys.password);
+      prefs.setBool(PreferenceKeys.rememberMe, false);
     }
   }
 
@@ -77,6 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } else {
       await _saveCredentials();
+      if(ctx.mounted){
+        final secretValue = secretController.text;
+        ctx.read<AppProvider>().setSecret(secretValue);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString(PreferenceKeys.secret, secretValue);
+        AppEncryption(secretValue);
+      }
       if(!ctx.mounted) return;
       ScaffoldMessenger.of(ctx).showSnackBar(
         SnackBar(content: Text('Welcome to your list!'))
@@ -97,6 +110,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                AppTextFormField(
+                  controller: secretController,
+                  label: 'Secret',
+                  validator: FormValidators.validateRequiredString,
+                ),
+                SizedBox(height: 20),
                 AppTextFormField(
                   controller: emailController,
                   label: 'Email',

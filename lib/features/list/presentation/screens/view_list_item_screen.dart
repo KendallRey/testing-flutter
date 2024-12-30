@@ -23,7 +23,7 @@ class _ViewListItemScreenState extends State<ViewListItemScreen> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _listService.getUserItem(user!.uid, widget.id),
+      stream: _listService.getUserItemDecrypted(user!.uid, widget.id),
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){
           return Center(child: CircularProgressIndicator());

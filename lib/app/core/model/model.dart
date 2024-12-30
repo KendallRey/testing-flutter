@@ -1,5 +1,4 @@
-
-class Model {
+abstract class Model {
 
   static final String idKey = 'id';
   static final String createdAtKey = 'createdAt';

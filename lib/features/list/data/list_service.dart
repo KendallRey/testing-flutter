@@ -17,7 +17,7 @@ class ListService {
       isLoading = true;
       final collection = getUserListItems(userId);
       await Future.delayed(Duration(seconds: 4));
-      await collection.add(payload.insertToMap());
+      await collection.add(payload.insertToMapEncrypted());
     } catch (e) {
       throw Exception('Failed to add new item: $e');
     } 
@@ -37,11 +37,36 @@ class ListService {
     }).toList());
   }
 
+  Stream<List<ListItemModel>> getUserItemsDecrypted(String userId) {
+    final collection = getUserListItems(userId);
+    return collection.snapshots().map((snapshot) => snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      return ListItemModel.fromMapDecrypted({
+        Model.idKey: doc.id,
+          ...data,
+        });
+    }).toList());
+  }
+
   Stream<ListItemModel?> getUserItem(String userId, String id) {
     final documentReference = getUserListItems(userId).doc(id);
     return documentReference.snapshots().map((snapshot) {
       if(snapshot.exists){
         return ListItemModel.fromMap(snapshot.data() as Map<String, dynamic>);
+      }
+      else {
+        return null;
+      }
+    }).handleError((error) {
+      return null;
+    });
+  }
+
+  Stream<ListItemModel?> getUserItemDecrypted(String userId, String id) {
+    final documentReference = getUserListItems(userId).doc(id);
+    return documentReference.snapshots().map((snapshot) {
+      if(snapshot.exists){
+        return ListItemModel.fromMapDecrypted(snapshot.data() as Map<String, dynamic>);
       }
       else {
         return null;

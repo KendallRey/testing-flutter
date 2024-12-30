@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:normal_list/app/core/model/model.dart';
 import 'package:normal_list/app/router.dart';
-import 'package:normal_list/features/list/data/list_item_model.dart';
 import 'package:normal_list/features/list/data/list_service.dart';
 
 class ListScreen extends StatelessWidget {
@@ -21,7 +19,7 @@ class ListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _listService.getUserItems(user!.uid),
+      stream: _listService.getUserItemsDecrypted(user!.uid),
       builder: (ctx, snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){
           return Center(child: CircularProgressIndicator());
@@ -42,7 +40,7 @@ class ListScreen extends StatelessWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  handleClickItem(context, user[Model.idKey]);
+                  handleClickItem(context, user.id);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -66,11 +64,11 @@ class ListScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  user[ListItemModel.codeKey],
+                                  user.code,
                                   style: Theme.of(context).textTheme.titleLarge,
                                 ),
                                 Text(
-                                  user[ListItemModel.titleKey],
+                                  user.title,
                                   style: Theme.of(context).textTheme.labelLarge,
                                 )
                               ],
