@@ -45,6 +45,7 @@ dependencies:
   shared_preferences: ^2.3.4
   provider: ^6.1.2
   encrypt: ^5.0.3
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
