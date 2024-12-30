@@ -24,20 +24,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
+    return Padding(
             padding: EdgeInsets.all(16),
-          ),
-        ),
-        Center(
-          child: AppButton(
-            label: 'Logout',
-            onPressed: () => handleLogout(context),
-          )
-        )
-      ],
+            child: Column(
+            children: [
+              Expanded(
+                child: Text(''),
+              ),
+              Center(
+                child: AppButton(
+                  label: 'Logout',
+                  onPressed: () => handleLogout(context),
+                )
+              )
+            ],
+      )
     );
   }
 }
