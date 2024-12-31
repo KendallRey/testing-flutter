@@ -72,6 +72,7 @@ class ListScreen extends StatelessWidget {
                                   style: Theme.of(context).textTheme.titleLarge,
                                 ),
                                 Text(
+                                  overflow: TextOverflow.ellipsis,
                                   item.title,
                                   style: Theme.of(context).textTheme.labelLarge,
                                 )
