@@ -165,7 +165,7 @@ class _AddListItemScreenState extends State<AddListItemScreen> {
             ),
             AppButton(
               onPressed: ()=>handleAddListItem(context),
-              disabled: ListService.isLoading,
+              loading: ListService.isLoading,
               label: 'Add Item',
             )
           ],
