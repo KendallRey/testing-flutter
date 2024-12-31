@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:normal_list/app/core/constants/firestore_collections.dart';
 import 'package:normal_list/app/core/model/model.dart';
 import 'package:normal_list/features/list/data/list_item_model.dart';
@@ -66,7 +67,10 @@ class ListService {
     final documentReference = getUserListItems(userId).doc(id);
     return documentReference.snapshots().map((snapshot) {
       if(snapshot.exists){
-        return ListItemModel.fromMapDecrypted(snapshot.data() as Map<String, dynamic>);
+        return ListItemModel.fromMapDecrypted({
+          Model.idKey: snapshot.id,
+          ...snapshot.data() as Map<String, dynamic>
+        });
       }
       else {
         return null;
@@ -106,13 +110,20 @@ class ListService {
     }
   }
 
-  Future<void> deleteUserItem(String userId, String id) async {
+  Future<bool> deleteUserItem(String userId, String id) async {
     try {
       isLoading = true;
       final collection = getUserListItems(userId);
-      collection.doc(id).delete();
+      await collection.doc(id).delete();
+      if(kDebugMode) {
+        print('Delete item called: $id');
+      }
+      return true;
     } catch (e) {
-      throw Exception('Failed to delete item: $e');
+      if(kDebugMode) {
+        print('Failed to delete item: $e');
+      }
+      return false;
     }
     finally {
       isLoading = false;
