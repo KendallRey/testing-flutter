@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
 
 
   final Color darkActionColor = Colors.deepOrange;
+  final Color darkPrimaryColor = Colors.black38;
   final Color darkFocusedColor = Colors.yellow;
   final Color darkGenericColor = Colors.black;
   final Color darkDisabledColor = Colors.blueGrey;
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark().copyWith(
         primaryColor: darkActionColor,
+        primaryColorDark: darkPrimaryColor,
         appBarTheme: AppBarTheme(
           backgroundColor: darkActionColor,
         ),
@@ -133,4 +135,5 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
     );
   }
+
 }

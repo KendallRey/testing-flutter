@@ -16,8 +16,8 @@ class ListService {
     try {
       isLoading = true;
       final collection = getUserListItems(userId);
-      await Future.delayed(Duration(seconds: 4));
-      await collection.add(payload.insertToMapEncrypted());
+      final _payload = await payload.insertToMapEncryptedAsync();
+      await collection.add(_payload);
     } catch (e) {
       throw Exception('Failed to add new item: $e');
     } 
@@ -81,7 +81,7 @@ class ListService {
       isLoading = true;
       final documentReference = getUserListItems(userId).doc(id);
       final document = await documentReference.get();
-      return ListItemModel.fromMap(document.data() as Map<String, dynamic>);
+      return ListItemModel.fromMapDecrypted(document.data() as Map<String, dynamic>);
     } catch (e) {
       return null;
     }

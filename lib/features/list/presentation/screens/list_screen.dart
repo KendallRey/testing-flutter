@@ -27,27 +27,28 @@ class ListScreen extends StatelessWidget {
         if(!snapshot.hasData || snapshot.data!.isEmpty){
           return Center(child: Text('No data found'));
         }
-        final users = snapshot.data!;
+        final items = snapshot.data!;
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
           padding: EdgeInsets.all(8.0),
-          itemCount: users.length,
+          itemCount: items.length,
           itemBuilder: (ctx, index) {
-          var user = users[index];
+          var item = items[index];
+          var imageDisplay = item.image != null ? FileImage(item.image!) : AssetImage('assets/sample.png');
             return Card(
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
                 onTap: () {
-                  handleClickItem(context, user.id);
+                  handleClickItem(context, item.id);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('images/sample.png'),
+                        image: imageDisplay as ImageProvider<Object>,
                         fit: BoxFit.cover,
                       )
                     ),
@@ -60,15 +61,18 @@ class ListScreen extends StatelessWidget {
                           right: 0,
                           child: Container(
                             padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorDark,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  user.code,
+                                  item.code,
                                   style: Theme.of(context).textTheme.titleLarge,
                                 ),
                                 Text(
-                                  user.title,
+                                  item.title,
                                   style: Theme.of(context).textTheme.labelLarge,
                                 )
                               ],
