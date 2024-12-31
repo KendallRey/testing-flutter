@@ -36,7 +36,7 @@ class ListScreen extends StatelessWidget {
           itemCount: items.length,
           itemBuilder: (ctx, index) {
           var item = items[index];
-          var imageDisplay = item.image != null ? FileImage(item.image!) : AssetImage('assets/sample.png');
+          ImageProvider<Object> imageDisplay = item.image != null ? FileImage(item.image!) : AssetImage('assets/sample.png');
             return Card(
               child: InkWell(
                 borderRadius: BorderRadius.circular(16),
@@ -48,7 +48,7 @@ class ListScreen extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: imageDisplay as ImageProvider<Object>,
+                        image: imageDisplay,
                         fit: BoxFit.cover,
                       )
                     ),
