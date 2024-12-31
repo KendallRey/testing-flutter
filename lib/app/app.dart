@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   final Color lightActionColor = Colors.blue;
   final Color lightFocusedColor = Colors.cyan;
   final Color lightGenericColor = Colors.white;
+  final Color lightDisabledColor = Colors.blueGrey;
 
   WidgetStateProperty<Color?> stateColorBackgroundDarkMode(){
     return WidgetStateProperty.resolveWith((state) {
@@ -25,6 +26,15 @@ class MyApp extends StatelessWidget {
         return darkDisabledColor;
       }
       return darkActionColor;
+    });
+  }
+
+  WidgetStateProperty<Color?> stateColorBackgroundLightMode(){
+    return WidgetStateProperty.resolveWith((state) {
+      if(state.contains(WidgetState.disabled)){
+        return lightDisabledColor;
+      }
+      return lightActionColor;
     });
   }
 
@@ -36,6 +46,11 @@ class MyApp extends StatelessWidget {
         primaryColor:  Colors.blue,
         appBarTheme: AppBarTheme(
           backgroundColor: lightActionColor,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: stateColorBackgroundLightMode(),
+          )
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedIconTheme: IconThemeData( color: lightActionColor),
@@ -69,6 +84,11 @@ class MyApp extends StatelessWidget {
         primaryColorDark: darkPrimaryColor,
         appBarTheme: AppBarTheme(
           backgroundColor: darkActionColor,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            foregroundColor: stateColorBackgroundDarkMode(),
+          )
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           selectedItemColor: darkActionColor,
