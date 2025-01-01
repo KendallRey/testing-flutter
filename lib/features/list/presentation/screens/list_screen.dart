@@ -69,12 +69,12 @@ class ListScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   item.code,
-                                  style: Theme.of(context).textTheme.titleLarge,
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                                 Text(
                                   overflow: TextOverflow.ellipsis,
                                   item.title,
-                                  style: Theme.of(context).textTheme.labelLarge,
+                                  style: Theme.of(context).textTheme.labelMedium,
                                 )
                               ],
                             ),

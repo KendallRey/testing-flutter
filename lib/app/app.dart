@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
 
 
   final Color darkActionColor = Colors.deepOrange;
-  final Color darkPrimaryColor = Colors.black38;
+  final Color darkShadeColor = Colors.black38;
   final Color darkFocusedColor = Colors.yellow;
   final Color darkGenericColor = Colors.black;
   final Color darkDisabledColor = Colors.blueGrey;
@@ -16,9 +16,12 @@ class MyApp extends StatelessWidget {
   final Color darkErrorFocusColor = Colors.redAccent;
 
   final Color lightActionColor = Colors.blue;
+  final Color lightShadeColor = Colors.white38;
   final Color lightFocusedColor = Colors.cyan;
   final Color lightGenericColor = Colors.white;
   final Color lightDisabledColor = Colors.blueGrey;
+  final Color lightErrorColor = Colors.red;
+  final Color lightErrorFocusColor = Colors.redAccent;
 
   WidgetStateProperty<Color?> stateColorBackgroundDarkMode(){
     return WidgetStateProperty.resolveWith((state) {
@@ -43,23 +46,59 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig:  AppRouter().router,
       theme: ThemeData.light().copyWith(
-        primaryColor:  Colors.blue,
+        primaryColor:  lightActionColor,
+        primaryColorDark: lightShadeColor,
         appBarTheme: AppBarTheme(
           backgroundColor: lightActionColor,
+          foregroundColor: lightGenericColor,
         ),
         textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            foregroundColor: stateColorBackgroundLightMode(),
-          )
+            style: ButtonStyle(
+              foregroundColor: stateColorBackgroundLightMode(),
+            )
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedIconTheme: IconThemeData( color: lightActionColor),
-          selectedLabelStyle: TextStyle(color: lightActionColor),
-          unselectedLabelStyle: TextStyle(color: lightActionColor),
+            selectedItemColor: lightActionColor,
+            unselectedItemColor: darkGenericColor,
+            backgroundColor: lightActionColor
         ),
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.blue,
-          textTheme: ButtonTextTheme.primary,
+        checkboxTheme: CheckboxThemeData(
+          checkColor: WidgetStateProperty.all(lightActionColor),
+          fillColor: WidgetStateProperty.all(Colors.transparent),
+          side: BorderSide(color: lightActionColor, width: 2),
+        ),
+        unselectedWidgetColor: lightActionColor,
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: lightActionColor,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: stateColorBackgroundLightMode(),
+            foregroundColor: WidgetStateProperty.all(lightGenericColor),
+          ),
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: lightActionColor,
+          foregroundColor: lightGenericColor,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: lightActionColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: lightFocusedColor),
+            ),
+            focusColor: darkFocusedColor,
+            labelStyle: TextStyle(color: lightActionColor),
+            floatingLabelStyle: TextStyle(
+                color: lightActionColor
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: lightErrorColor),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: lightErrorFocusColor),
+            )
         ),
         textTheme: TextTheme(
           displayLarge: TextStyle(color: darkGenericColor),
@@ -74,16 +113,17 @@ class MyApp extends StatelessWidget {
           bodyLarge: TextStyle(color: darkGenericColor),
           bodyMedium: TextStyle(color: darkGenericColor),
           bodySmall: TextStyle(color: darkGenericColor),
-          labelLarge: TextStyle(color: darkGenericColor),
-          labelMedium: TextStyle(color: darkGenericColor),
-          labelSmall: TextStyle(color: darkGenericColor),
+          labelLarge: TextStyle(color: lightGenericColor),
+          labelMedium: TextStyle(color: lightGenericColor),
+          labelSmall: TextStyle(color: lightGenericColor),
         ),
       ),
       darkTheme: ThemeData.dark().copyWith(
         primaryColor: darkActionColor,
-        primaryColorDark: darkPrimaryColor,
+        primaryColorDark: darkShadeColor,
         appBarTheme: AppBarTheme(
           backgroundColor: darkActionColor,
+          foregroundColor: lightGenericColor,
         ),
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(
@@ -152,7 +192,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       // themeMode: ThemeMode.light,
-      themeMode: ThemeMode.dark,
+      // themeMode: ThemeMode.dark,
     );
   }
 
