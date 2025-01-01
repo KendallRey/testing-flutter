@@ -17,6 +17,7 @@ class ListItemModel extends Model {
   final String code;
   final String? url;
   final File? image;
+  final bool hasError;
 
   // Default constructor
   ListItemModel({
@@ -25,6 +26,7 @@ class ListItemModel extends Model {
     required this.title,
     this.url,
     this.image,
+    this.hasError = false,
   });
 
   // Firebase document constructor
@@ -50,6 +52,7 @@ class ListItemModel extends Model {
 
   factory ListItemModel.fromMapDecrypted(Map<String, dynamic> map){
     File? image;
+    bool hasError = false;
     if(map[ListItemModel.imageKey] != null){
       try {
         final decryptedImageBase64 = AppEncryption.decrypt(map[ListItemModel.imageKey]);
@@ -57,6 +60,7 @@ class ListItemModel extends Model {
         image = FileHandler.writeFileFromBase64(imageBytes);
       } catch (e) {
         image = null;
+        hasError = true;
       }
     }
     return ListItemModel(
@@ -65,6 +69,7 @@ class ListItemModel extends Model {
         title: AppEncryption.decrypt(map[ListItemModel.titleKey]),
         url:  AppEncryption.decrypt(map[ListItemModel.urlKey]),
         image: image,
+        hasError: hasError,
     );
   }
 

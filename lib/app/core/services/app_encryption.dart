@@ -34,8 +34,12 @@ class AppEncryption {
 
   static String decrypt(String? encryptedText) {
     if(encryptedText == null || encryptedText.isEmpty) return '';
-    final encrypter = Encrypter(AES(getKeyFromSecret(secret), mode: AESMode.cbc ));
-    final decrypted = encrypter.decrypt(Encrypted.fromBase64(encryptedText), iv: getIV());
-    return decrypted;
+    try {
+      final encrypter = Encrypter(AES(getKeyFromSecret(secret), mode: AESMode.cbc ));
+      final decrypted = encrypter.decrypt(Encrypted.fromBase64(encryptedText), iv: getIV());
+      return decrypted;
+    } catch (e) {
+      return encryptedText;
+    }
   }
 }
