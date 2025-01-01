@@ -7,8 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:normal_list/app/core/widgets/app_bar.dart';
 import 'package:normal_list/app/core/widgets/bottom_app_bar.dart';
 import 'package:normal_list/features/auth/presentation/screens/login_screen.dart';
+import 'package:normal_list/features/list/data/list_item_model.dart';
 import 'package:normal_list/features/list/presentation/screens/add_list_item_screen.dart';
 import 'package:normal_list/features/list/presentation/screens/list_screen.dart';
+import 'package:normal_list/features/list/presentation/screens/update_list_item_screen.dart';
 import 'package:normal_list/features/list/presentation/screens/view_list_item_screen.dart';
 import 'package:normal_list/features/settings/presentation/screens/settings_screen.dart';
 
@@ -21,12 +23,15 @@ class AppRoutes {
   static const String addListItem = '/add-list-item';
   static const String viewListItem = '/view-list-item';
   static const String viewListItemName = 'view-list-item';
+  static const String updateListItemName = 'update-list-item';
   static const String viewListItemId = '/view-list-item/:${AppRoutes.id}';
+  static const String updateListItemId = '/update-list-item/:${AppRoutes.id}';
 
   static const String titleHome = 'My List';
   static const String titleLogin = 'Login';
   static const String titleSettings = 'Settings';
   static const String titleAddListItem = 'Add List Item';
+  static const String titleUpdateListItem = 'Update List Item';
   static const String titleViewListItem = 'View Item';
 
   static HashMap<String, int> indexes = HashMap<String, int>.from({
@@ -102,6 +107,14 @@ class AppRouter {
         pageBuilder: (ctx, state) {
           final id = state.pathParameters[AppRoutes.id] ?? '';
           return AppRouter.customTransitionPage(ViewListItemScreen(id: id), state);
+        },
+      ),
+      GoRoute(
+        name: AppRoutes.updateListItemName,
+        path: AppRoutes.updateListItemId,
+        pageBuilder: (ctx, state) {
+          final item = state.extra as ListItemModel;
+          return AppRouter.customTransitionPage(UpdateListItemScreen(item: item), state);
         },
       )
     ]

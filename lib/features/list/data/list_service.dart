@@ -13,12 +13,12 @@ class ListService {
 
   static bool isLoading = false;
 
-  Future<void> addUserItem(String userId, ListItemModel payload ) async {
+  Future<void> addUserItem(String userId, ListItemModel item) async {
     try {
       isLoading = true;
       final collection = getUserListItems(userId);
-      final _payload = await payload.insertToMapEncryptedAsync();
-      await collection.add(_payload);
+      final payload = await item.insertToMapEncryptedAsync();
+      await collection.add(payload);
     } catch (e) {
       throw Exception('Failed to add new item: $e');
     } 
@@ -94,16 +94,17 @@ class ListService {
     }
   }
 
-  Future<void> updateUserItem(String userId, String id, Map<String, dynamic> updatedData) async {
+  Future<void> updateUserItem(String userId,  String id, ListItemModel item) async {
     try {
       isLoading = true;
       final collection = getUserListItems(userId);
+      final payload = await item.insertToMapEncryptedAsync();
       await collection.doc(id).update({
-        ...updatedData,
+        ...payload,
         Model.updatedAtKey : FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      throw Exception('Failed to update item: $e');
+      throw Exception('Failed to add new item: $e');
     }
     finally {
       isLoading = false;

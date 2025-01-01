@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:normal_list/app/core/widgets/button.dart';
+import 'package:normal_list/app/router.dart';
+import 'package:normal_list/features/list/data/list_item_model.dart';
 import 'package:normal_list/features/list/data/list_service.dart';
 
 class ViewListItemScreen extends StatefulWidget {
@@ -72,6 +74,15 @@ class _ViewListItemScreenState extends State<ViewListItemScreen> {
       if(ctx.mounted) _handleDeleteItem(ctx, id);
     }
   }
+  
+  void _handleUpdateItem(BuildContext ctx, ListItemModel item){
+    if(ctx.mounted){
+      ctx.pushNamed(AppRoutes.updateListItemName,
+        pathParameters: { AppRoutes.id: item.id },
+        extra: item
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +148,12 @@ class _ViewListItemScreenState extends State<ViewListItemScreen> {
                         width: 150.0,
                         disabled: ListService.isLoading,
                       ),
-                      AppButton(onPressed: (){},
+                      AppButton(onPressed: (){
+                        _handleUpdateItem(context, item);
+                      },
                         label: 'Edit',
                         width: 150.0,
-                        disabled: true,
+                        disabled: ListService.isLoading,
                       ),
                     ],
                   )

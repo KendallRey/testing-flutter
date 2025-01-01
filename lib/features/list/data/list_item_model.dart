@@ -96,7 +96,6 @@ class ListItemModel extends Model {
   }
 
   Future<Map<String, dynamic>> insertToMapEncryptedAsync() async {
-    print('------started---------1');
     String? encryptedImageBase64;
     if(image != null){
       final imageBase64 = FileHandler.readBase64FromFile(image!);
