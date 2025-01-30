@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:normal_list/app/core/constants/preference_keys.dart';
@@ -20,14 +19,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController secretController = TextEditingController();
 
   final AuthService authService = AuthService();
-  
+
   bool rememberMe = false;
 
   @override
@@ -43,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = prefs.getString(PreferenceKeys.password);
     final isRemembered = prefs.getBool(PreferenceKeys.rememberMe) ?? false;
 
-    if(isRemembered && email != null && password != null){
+    if (isRemembered && email != null && password != null) {
       emailController.text = email;
       passwordController.text = password;
       setState(() {
@@ -55,8 +53,8 @@ class _LoginScreenState extends State<LoginScreen> {
   // Save credentials
   Future<void> _saveCredentials() async {
     final prefs = await SharedPreferences.getInstance();
-    
-    if(rememberMe){
+
+    if (rememberMe) {
       prefs.setString(PreferenceKeys.email, emailController.text);
       prefs.setString(PreferenceKeys.password, passwordController.text);
       prefs.setBool(PreferenceKeys.rememberMe, true);
@@ -69,33 +67,30 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Handle login
   void handleLogin(BuildContext ctx) async {
-
-    if(!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) return;
 
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final user = await authService.signInWithEmail(email, password);
-    
-    if(!ctx.mounted) return;
-    if(user == null){
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(content: Text('Login failed!'))
-      );
+
+    if (!ctx.mounted) return;
+    if (user == null) {
+      ScaffoldMessenger.of(ctx)
+          .showSnackBar(SnackBar(content: Text('Login failed!')));
     } else {
       await _saveCredentials();
-      if(ctx.mounted){
+      if (ctx.mounted) {
         final secretValue = secretController.text;
         ctx.read<AppProvider>().setSecret(secretValue);
         final prefs = await SharedPreferences.getInstance();
         prefs.setString(PreferenceKeys.secret, secretValue);
         AppEncryption(secretValue);
       }
-      if(!ctx.mounted) return;
-      ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(content: Text('Welcome to your list!'))
-      );
+      if (!ctx.mounted) return;
+      ScaffoldMessenger.of(ctx)
+          .showSnackBar(SnackBar(content: Text('Welcome to your list!')));
       await Future.delayed(Durations.medium1);
-      if(!ctx.mounted) return;
+      if (!ctx.mounted) return;
       ctx.go(AppRoutes.home);
     }
   }
@@ -104,10 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
+          padding: EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppTextFormField(
@@ -139,12 +134,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     children: [
                       Checkbox(
-                        value: rememberMe, onChanged: (bool? value) {
-                          setState(() {
-                            rememberMe = value ?? false;
-                          });
-                        }
-                      ),
+                          value: rememberMe,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              rememberMe = value ?? false;
+                            });
+                          }),
                       Text('Remember Me')
                     ],
                   ),
@@ -162,8 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 }

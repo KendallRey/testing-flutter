@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +12,6 @@ import 'package:normal_list/features/list/data/list_item_model.dart';
 import 'package:normal_list/features/list/data/list_service.dart';
 
 class UpdateListItemScreen extends StatefulWidget {
-
   final ListItemModel item;
 
   const UpdateListItemScreen({
@@ -26,7 +24,6 @@ class UpdateListItemScreen extends StatefulWidget {
 }
 
 class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController codeController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
@@ -38,7 +35,7 @@ class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
     codeController.text = widget.item.code ?? '';
     titleController.text = widget.item.title ?? '';
     urlController.text = widget.item.url ?? '';
-    if(widget.item.image != null){
+    if (widget.item.image != null) {
       _mediaFile = XFile(widget.item.image!.path);
     }
     super.initState();
@@ -47,9 +44,9 @@ class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
   XFile? _mediaFile;
 
   Future<void> _onImageButtonPressed(
-      ImageSource source, {
-        required BuildContext context,
-      }) async {
+    ImageSource source, {
+    required BuildContext context,
+  }) async {
     if (context.mounted) {
       try {
         final XFile? media = await picker.pickMedia(
@@ -67,7 +64,7 @@ class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
     }
   }
 
-  void _onImageClear(){
+  void _onImageClear() {
     setState(() {
       _mediaFile = null;
     });
@@ -88,9 +85,9 @@ class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
 
   // handle update list item
   void handleUpdateListItem(BuildContext ctx) async {
-    setState(() { });
-    if(user == null) return;
-    if(!_formKey.currentState!.validate()) return;
+    setState(() {});
+    if (user == null) return;
+    if (!_formKey.currentState!.validate()) return;
     await listService.updateUserItem(
         user!.uid,
         widget.item.id,
@@ -99,17 +96,15 @@ class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
           titleController.text,
           urlController.text,
           _mediaFile != null ? File(_mediaFile!.path) : null,
-        )
-    );
-    if(ctx.mounted){
+        ));
+    if (ctx.mounted) {
       ScaffoldMessenger.of(ctx).showSnackBar(
-          SnackBar(content: Text('Item updated: ${codeController.text}'))
-      );
-      if(ctx.canPop()){
+          SnackBar(content: Text('Item updated: ${codeController.text}')));
+      if (ctx.canPop()) {
         ctx.pop();
       }
     }
-    setState(() { });
+    setState(() {});
   }
 
   @override
@@ -119,74 +114,67 @@ class _UpdateListItemScreenState extends State<UpdateListItemScreen> {
         title: Text(widget.item.code),
         leading: IconButton(
           onPressed: () => {
-            if(context.canPop()){
-              context.pop()
-            }
+            if (context.canPop()) {context.pop()}
           },
           icon: Icon(Icons.arrow_back),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Flexible(
-              child: ListView(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Flexible(
+                  child: ListView(
                 children: [
                   Form(
-                    key: _formKey,
-                    child: Column(
-                      spacing: 24,
-                      children: [
-                        Center(
-                          child: FutureBuilder(
-                              future: retrieveLostData(),
-                            builder:(context, snapshot) {
-                              return XImageView(
-                                imageFile: _mediaFile,
-                                state: snapshot.connectionState,
-                                onPressed: () {
-                                  if(ListService.isLoading) return;
-                                  _onImageButtonPressed(ImageSource.gallery, context: context);
-                                }
-                              );
-                            }
+                      key: _formKey,
+                      child: Column(
+                        spacing: 24,
+                        children: [
+                          Center(
+                            child: FutureBuilder(
+                                future: retrieveLostData(),
+                                builder: (context, snapshot) {
+                                  return XImageView(
+                                      imageFile: _mediaFile,
+                                      state: snapshot.connectionState,
+                                      onPressed: () {
+                                        if (ListService.isLoading) return;
+                                        _onImageButtonPressed(
+                                            ImageSource.gallery,
+                                            context: context);
+                                      });
+                                }),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: ListService.isLoading ? null : _onImageClear,
-                          child: Chip(
-                            label: Text('Clear Image'),
+                          GestureDetector(
+                            onTap: ListService.isLoading ? null : _onImageClear,
+                            child: Chip(
+                              label: Text('Clear Image'),
+                            ),
                           ),
-                        ),
-                        AppTextFormField(
-                          controller: codeController,
-                          label: 'Code',
-                          validator: FormValidators.validateRequiredString
-                        ),
-                        AppTextFormField(
-                          controller: titleController,
-                          label: 'Title',
-                          validator: FormValidators.validateRequiredString
-                        ),
-                        AppTextFormField(
-                          controller: urlController,
-                          label: 'Url',
-                        ),
-                      ],
-                    )
-                  )
+                          AppTextFormField(
+                              controller: codeController,
+                              label: 'Code',
+                              validator: FormValidators.validateRequiredString),
+                          AppTextFormField(
+                              controller: titleController,
+                              label: 'Title',
+                              validator: FormValidators.validateRequiredString),
+                          AppTextFormField(
+                            controller: urlController,
+                            label: 'Url',
+                          ),
+                        ],
+                      ))
                 ],
+              )),
+              AppButton(
+                onPressed: () => handleUpdateListItem(context),
+                loading: ListService.isLoading,
+                label: 'Update Item',
               )
-            ),
-            AppButton(
-              onPressed: ()=>handleUpdateListItem(context),
-              loading: ListService.isLoading,
-              label: 'Update Item',
-            )
-          ],
-        )
-      ),
+            ],
+          )),
     );
   }
 }

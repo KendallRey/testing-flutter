@@ -5,9 +5,8 @@ class AppProvider with ChangeNotifier {
 
   String get secret => _secret;
 
-  void setSecret(String value){
+  void setSecret(String value) {
     _secret = value;
     notifyListeners();
   }
-
 }

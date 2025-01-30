@@ -12,8 +12,8 @@ class AppLifecycleObserver extends StatefulWidget {
   _AppLifecycleObserverState createState() => _AppLifecycleObserverState();
 }
 
-class _AppLifecycleObserverState extends State<AppLifecycleObserver> with WidgetsBindingObserver {
-
+class _AppLifecycleObserverState extends State<AppLifecycleObserver>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -70,35 +70,33 @@ class _AppLifecycleObserverState extends State<AppLifecycleObserver> with Widget
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
-        if(kDebugMode){
-          print('Pop invoked!');
-        }
-        if (didPop) {
-          return;
-        }
-        if(kDebugMode){
-          print('Pop invoked!: 2');
-        }
-        final bool shouldPop = await _showExitAppDialog() ?? false;
-        if (shouldPop) {
-          // Since this is the root route, quit the app where possible by
-          // invoking the SystemNavigator. If this wasn't the root route,
-          // then Navigator.maybePop could be used instead.
-          if(context.mounted){
-            context.pop();
+        canPop: true,
+        onPopInvokedWithResult: (bool didPop, Object? result) async {
+          if (kDebugMode) {
+            print('Pop invoked!');
           }
-        }
-      },
-      child: widget.child
-    );
+          if (didPop) {
+            return;
+          }
+          if (kDebugMode) {
+            print('Pop invoked!: 2');
+          }
+          final bool shouldPop = await _showExitAppDialog() ?? false;
+          if (shouldPop) {
+            // Since this is the root route, quit the app where possible by
+            // invoking the SystemNavigator. If this wasn't the root route,
+            // then Navigator.maybePop could be used instead.
+            if (context.mounted) {
+              context.pop();
+            }
+          }
+        },
+        child: widget.child);
   }
 }

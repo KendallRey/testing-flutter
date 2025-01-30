@@ -1,4 +1,3 @@
-
 class PreferenceKeys {
   static const String prefix = '@my-normal-list';
   static const String email = '$prefix-email';

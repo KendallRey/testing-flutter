@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:normal_list/app/router.dart';
 
 class MyApp extends StatelessWidget {
-
-  const MyApp({ super.key });
-
+  const MyApp({super.key});
 
   final Color darkActionColor = Colors.deepOrange;
   final Color darkShadeColor = Colors.black38;
@@ -23,18 +20,18 @@ class MyApp extends StatelessWidget {
   final Color lightErrorColor = Colors.red;
   final Color lightErrorFocusColor = Colors.redAccent;
 
-  WidgetStateProperty<Color?> stateColorBackgroundDarkMode(){
+  WidgetStateProperty<Color?> stateColorBackgroundDarkMode() {
     return WidgetStateProperty.resolveWith((state) {
-      if(state.contains(WidgetState.disabled)){
+      if (state.contains(WidgetState.disabled)) {
         return darkDisabledColor;
       }
       return darkActionColor;
     });
   }
 
-  WidgetStateProperty<Color?> stateColorBackgroundLightMode(){
+  WidgetStateProperty<Color?> stateColorBackgroundLightMode() {
     return WidgetStateProperty.resolveWith((state) {
-      if(state.contains(WidgetState.disabled)){
+      if (state.contains(WidgetState.disabled)) {
         return lightDisabledColor;
       }
       return lightActionColor;
@@ -44,9 +41,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig:  AppRouter().router,
+      routerConfig: AppRouter().router,
       theme: ThemeData.light().copyWith(
-        primaryColor:  lightActionColor,
+        primaryColor: lightActionColor,
         primaryColorDark: lightShadeColor,
         appBarTheme: AppBarTheme(
           backgroundColor: lightActionColor,
@@ -54,14 +51,12 @@ class MyApp extends StatelessWidget {
         ),
         textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
-              foregroundColor: stateColorBackgroundLightMode(),
-            )
-        ),
+          foregroundColor: stateColorBackgroundLightMode(),
+        )),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
             selectedItemColor: lightActionColor,
             unselectedItemColor: darkGenericColor,
-            backgroundColor: lightActionColor
-        ),
+            backgroundColor: lightActionColor),
         checkboxTheme: CheckboxThemeData(
           checkColor: WidgetStateProperty.all(lightActionColor),
           fillColor: WidgetStateProperty.all(Colors.transparent),
@@ -90,16 +85,13 @@ class MyApp extends StatelessWidget {
             ),
             focusColor: darkFocusedColor,
             labelStyle: TextStyle(color: lightActionColor),
-            floatingLabelStyle: TextStyle(
-                color: lightActionColor
-            ),
+            floatingLabelStyle: TextStyle(color: lightActionColor),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: lightErrorColor),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: lightErrorFocusColor),
-            )
-        ),
+            )),
         textTheme: TextTheme(
           displayLarge: TextStyle(color: darkGenericColor),
           displayMedium: TextStyle(color: darkGenericColor),
@@ -126,15 +118,13 @@ class MyApp extends StatelessWidget {
           foregroundColor: lightGenericColor,
         ),
         textButtonTheme: TextButtonThemeData(
-          style: ButtonStyle(
-            foregroundColor: stateColorBackgroundDarkMode(),
-          )
-        ),
+            style: ButtonStyle(
+          foregroundColor: stateColorBackgroundDarkMode(),
+        )),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: darkActionColor,
-          unselectedItemColor: lightGenericColor,
-          backgroundColor: darkActionColor
-        ),
+            selectedItemColor: darkActionColor,
+            unselectedItemColor: lightGenericColor,
+            backgroundColor: darkActionColor),
         checkboxTheme: CheckboxThemeData(
           checkColor: WidgetStateProperty.all(darkActionColor),
           fillColor: WidgetStateProperty.all(Colors.transparent),
@@ -155,24 +145,21 @@ class MyApp extends StatelessWidget {
           foregroundColor: lightGenericColor,
         ),
         inputDecorationTheme: InputDecorationTheme(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: darkActionColor),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: darkFocusedColor),
-          ),
-          focusColor: darkFocusedColor,
-          labelStyle: TextStyle(color: darkActionColor),
-          floatingLabelStyle: TextStyle(
-            color: darkActionColor
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: darkErrorColor),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: darkErrorFocusColor),
-          )
-        ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: darkActionColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: darkFocusedColor),
+            ),
+            focusColor: darkFocusedColor,
+            labelStyle: TextStyle(color: darkActionColor),
+            floatingLabelStyle: TextStyle(color: darkActionColor),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: darkErrorColor),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: darkErrorFocusColor),
+            )),
         textTheme: TextTheme(
           displayLarge: TextStyle(color: lightGenericColor),
           displayMedium: TextStyle(color: lightGenericColor),
@@ -195,5 +182,4 @@ class MyApp extends StatelessWidget {
       // themeMode: ThemeMode.dark,
     );
   }
-
 }

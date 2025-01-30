@@ -20,10 +20,8 @@ class AppTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: label
-      ),
+      decoration:
+          InputDecoration(border: OutlineInputBorder(), labelText: label),
       validator: validator,
       keyboardType: keyboardType,
       obscureText: obscureText ?? false,

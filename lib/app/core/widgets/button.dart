@@ -19,17 +19,16 @@ class AppButton extends StatelessWidget {
     this.loading = false,
     this.disabled = false,
   });
-  
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-            onPressed: (loading || disabled) ? null : onPressed,
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(width, height), // Set button size
-                textStyle: TextStyle(fontSize: fontSize), // Set the text size
-              ),
-              child: loading ? CircularProgressIndicator() : Text(label),
-            );
+      onPressed: (loading || disabled) ? null : onPressed,
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(width, height), // Set button size
+        textStyle: TextStyle(fontSize: fontSize), // Set the text size
+      ),
+      child: loading ? CircularProgressIndicator() : Text(label),
+    );
   }
 }

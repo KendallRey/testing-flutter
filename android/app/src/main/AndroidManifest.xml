@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="normal_list"
+        android:label="Normal List"
         android:enableOnBackInvokedCallback="false"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class XImageView extends StatelessWidget {
-
   final XFile? imageFile;
   final double height;
   final double width;
@@ -21,19 +20,17 @@ class XImageView extends StatelessWidget {
     this.width = 320.0,
     this.state,
   });
-  
 
   @override
   Widget build(BuildContext context) {
-    if(state != null){
-      switch(state!){
+    if (state != null) {
+      switch (state!) {
         case ConnectionState.waiting:
           return Card(
             child: SizedBox(
                 height: height,
                 width: width,
-                child: CircularProgressIndicator()
-              ),
+                child: CircularProgressIndicator()),
           );
         case ConnectionState.none:
           return Card(
@@ -42,12 +39,11 @@ class XImageView extends StatelessWidget {
                   height: height,
                   width: width,
                   child: Text(
-                      'Select an image',
-                      textAlign: TextAlign.center,
-                    )
-                ),
-              ),
-            );
+                    'Select an image',
+                    textAlign: TextAlign.center,
+                  )),
+            ),
+          );
         case ConnectionState.done:
           return Card(
             child: InkWell(
@@ -55,31 +51,33 @@ class XImageView extends StatelessWidget {
               child: SizedBox(
                 height: height,
                 width: width,
-                child: imageFile == null ? Center(
-                  child: Text(
-                    'Select an image',
-                    textAlign: TextAlign.center,
-                  ),
-                ) :  kIsWeb ? Image.network(imageFile!.path) : Image.file(File(imageFile!.path)),
+                child: imageFile == null
+                    ? Center(
+                        child: Text(
+                          'Select an image',
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : kIsWeb
+                        ? Image.network(imageFile!.path)
+                        : Image.file(File(imageFile!.path)),
               ),
             ),
           );
         default:
           return Card(
-            child: InkWell(
-              onTap: onPressed,
-              child: SizedBox(
-                height: height,
-                width: width,
-                child: Center(
+              child: InkWell(
+            onTap: onPressed,
+            child: SizedBox(
+              height: height,
+              width: width,
+              child: Center(
                   child: Text(
-                    'Select an image',
-                    textAlign: TextAlign.center,
-                  )
-              ),
+                'Select an image',
+                textAlign: TextAlign.center,
+              )),
             ),
-          )
-        );
+          ));
       }
     }
     return Card(
@@ -88,12 +86,16 @@ class XImageView extends StatelessWidget {
         child: SizedBox(
           height: height,
           width: width,
-          child: imageFile == null ? Center(
-            child: Text(
-              'Select an image',
-              textAlign: TextAlign.center,
-            ),
-          ) :  kIsWeb ? Image.network(imageFile!.path) : Image.file(File(imageFile!.path)),
+          child: imageFile == null
+              ? Center(
+                  child: Text(
+                    'Select an image',
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : kIsWeb
+                  ? Image.network(imageFile!.path)
+                  : Image.file(File(imageFile!.path)),
         ),
       ),
     );

@@ -12,33 +12,29 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   void handleLogout(BuildContext ctx) async {
     AuthService().signOut();
     await Future.delayed(Durations.medium1);
-    if(ctx.mounted) {
+    if (ctx.mounted) {
       ctx.go(AppRoutes.login);
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-            children: [
-              Expanded(
-                child: Text(''),
-              ),
-              Center(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Expanded(
+              child: Text(''),
+            ),
+            Center(
                 child: AppButton(
-                  label: 'Logout',
-                  onPressed: () => handleLogout(context),
-                )
-              )
-            ],
-      )
-    );
+              label: 'Logout',
+              onPressed: () => handleLogout(context),
+            ))
+          ],
+        ));
   }
 }

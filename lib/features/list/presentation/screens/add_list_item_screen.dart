@@ -22,7 +22,6 @@ class AddListItemScreen extends StatefulWidget {
 }
 
 class _AddListItemScreenState extends State<AddListItemScreen> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController codeController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
@@ -47,12 +46,12 @@ class _AddListItemScreenState extends State<AddListItemScreen> {
             _mediaFile = media;
           });
         }
-      // ignore: empty_catches
+        // ignore: empty_catches
       } catch (e) {}
     }
   }
 
-  void _onImageClear(){
+  void _onImageClear() {
     setState(() {
       _mediaFile = null;
     });
@@ -73,27 +72,25 @@ class _AddListItemScreenState extends State<AddListItemScreen> {
 
   // handle add list item
   void handleAddListItem(BuildContext ctx) async {
-    setState(() { });
-    if(user == null) return;
-    if(!_formKey.currentState!.validate()) return;
+    setState(() {});
+    if (user == null) return;
+    if (!_formKey.currentState!.validate()) return;
     await listService.addUserItem(
-      user!.uid,
-      ListItemModel.insert(
-        codeController.text,
-        titleController.text,
-        urlController.text,
-        _mediaFile != null ? File(_mediaFile!.path) : null,
-      )
-    );
-    if(ctx.mounted){
+        user!.uid,
+        ListItemModel.insert(
+          codeController.text,
+          titleController.text,
+          urlController.text,
+          _mediaFile != null ? File(_mediaFile!.path) : null,
+        ));
+    if (ctx.mounted) {
       ScaffoldMessenger.of(ctx).showSnackBar(
-        SnackBar(content: Text('Item added: ${codeController.text}'))
-      );
-      if(ctx.canPop()){
+          SnackBar(content: Text('Item added: ${codeController.text}')));
+      if (ctx.canPop()) {
         ctx.pop();
       }
     }
-    setState(() { });
+    setState(() {});
   }
 
   @override
@@ -103,74 +100,67 @@ class _AddListItemScreenState extends State<AddListItemScreen> {
         title: Text(AppRoutes.titleAddListItem),
         leading: IconButton(
           onPressed: () => {
-            if(context.canPop()){
-              context.pop()
-            }
+            if (context.canPop()) {context.pop()}
           },
           icon: Icon(Icons.arrow_back),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Flexible(
-                child: ListView(
-                  children: [
-                    Form(
-                        key: _formKey,
-                        child: Column(
-                          spacing: 24,
-                          children: [
-                            Center(
-                              child: FutureBuilder(
-                                  future: retrieveLostData(),
-                                  builder:(context, snapshot) {
-                                    return XImageView(
-                                        imageFile: _mediaFile,
-                                        state: snapshot.connectionState,
-                                        onPressed: () {
-                                          if(ListService.isLoading) return;
-                                          _onImageButtonPressed(ImageSource.gallery, context: context);
-                                        }
-                                    );
-                                  }
-                              ),
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Flexible(
+                  child: ListView(
+                children: [
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        spacing: 24,
+                        children: [
+                          Center(
+                            child: FutureBuilder(
+                                future: retrieveLostData(),
+                                builder: (context, snapshot) {
+                                  return XImageView(
+                                      imageFile: _mediaFile,
+                                      state: snapshot.connectionState,
+                                      onPressed: () {
+                                        if (ListService.isLoading) return;
+                                        _onImageButtonPressed(
+                                            ImageSource.gallery,
+                                            context: context);
+                                      });
+                                }),
+                          ),
+                          GestureDetector(
+                            onTap: ListService.isLoading ? null : _onImageClear,
+                            child: Chip(
+                              label: Text('Clear Image'),
                             ),
-                            GestureDetector(
-                              onTap: ListService.isLoading ? null : _onImageClear,
-                              child: Chip(
-                                label: Text('Clear Image'),
-                              ),
-                            ),
-                            AppTextFormField(
-                                controller: codeController,
-                                label: 'Code',
-                                validator: FormValidators.validateRequiredString
-                            ),
-                            AppTextFormField(
-                                controller: titleController,
-                                label: 'Title',
-                                validator: FormValidators.validateRequiredString
-                            ),
-                            AppTextFormField(
-                              controller: urlController,
-                              label: 'Url',
-                            ),
-                          ],
-                        )
-                    )
-                  ],
-                )
-            ),
-            AppButton(
-              onPressed: ()=>handleAddListItem(context),
-              loading: ListService.isLoading,
-              label: 'Add Item',
-            )
-          ],
-        )
-      ),
+                          ),
+                          AppTextFormField(
+                              controller: codeController,
+                              label: 'Code',
+                              validator: FormValidators.validateRequiredString),
+                          AppTextFormField(
+                              controller: titleController,
+                              label: 'Title',
+                              validator: FormValidators.validateRequiredString),
+                          AppTextFormField(
+                            controller: urlController,
+                            label: 'Url',
+                          ),
+                        ],
+                      ))
+                ],
+              )),
+              AppButton(
+                onPressed: () => handleAddListItem(context),
+                loading: ListService.isLoading,
+                label: 'Add Item',
+              )
+            ],
+          )),
     );
   }
 }

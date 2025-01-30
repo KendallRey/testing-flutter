@@ -15,15 +15,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AppProvider()),
-        ChangeNotifierProvider(create: (_) => ListProvider()),
-      ],
-      child: AppLifecycleObserver(
-          child: MyApp()
-      ),
-    )
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => AppProvider()),
+      ChangeNotifierProvider(create: (_) => ListProvider()),
+    ],
+    child: AppLifecycleObserver(child: MyApp()),
+  ));
 }

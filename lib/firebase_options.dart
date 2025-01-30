@@ -40,7 +40,7 @@ class DefaultFirebaseOptions {
         );
     }
   }
-  
+
   static FirebaseOptions get web {
     return FirebaseOptions(
       apiKey: dotenv.env['WEB_APIKEY']!,

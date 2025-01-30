@@ -1,4 +1,3 @@
-
 import 'dart:collection';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +14,6 @@ import 'package:normal_list/features/list/presentation/screens/view_list_item_sc
 import 'package:normal_list/features/settings/presentation/screens/settings_screen.dart';
 
 class AppRoutes {
-
   static const String id = 'id';
   static const String home = '/';
   static const String login = '/login';
@@ -45,103 +43,110 @@ class AppRoutes {
     AppRoutes.addListItem: AppRoutes.titleAddListItem,
     AppRoutes.viewListItemId: AppRoutes.titleViewListItem,
   });
-
 }
 
 class AppRouter {
-
   final GoRouter router;
 
-  AppRouter() : router = GoRouter(
-    initialLocation: AppRoutes.login,
-    redirect: (ctx, state) {
-      final isAuthenticated = FirebaseAuth.instance.currentUser != null;
-      final isLoggingIn = state.uri.toString() == AppRoutes.login;
-      if(!isAuthenticated && !isLoggingIn){
-        return AppRoutes.login;
-      }
-      if(isAuthenticated && isLoggingIn){
-        return AppRoutes.home;
-      }
-      return null;
-    },
-    routes: [
-      GoRoute(
-        path: AppRoutes.login,
-        pageBuilder: (ctx, state) => AppRouter.customTransitionPage(LoginScreen(), state),
-      ),
-      ShellRoute(
-        builder:(context, state, child) {
-          final url = state.uri.toString();
-          final String pageTitle = AppRoutes.titles[url] ?? 'App';
-          return Scaffold(
-            appBar: MyAppBar(title: pageTitle),
-            body: AnimatedSwitcher(
-              duration: Durations.short1,
-              child: child,
-            ),
-            bottomNavigationBar: MyBottomAppBar(),
-            floatingActionButton: url == AppRoutes.home ? FloatingActionButton(
-              onPressed: ()=>handleAddItem(context),
-              child: Icon(Icons.add),
-            ) : null,
-          );
-        },
-        routes: [
-          GoRoute(
-            path: AppRoutes.home,
-            pageBuilder: (ctx, state) => AppRouter.customTransitionPage(ListScreen(), state)
-          ),
-          GoRoute(
-            path: AppRoutes.settings,
-            pageBuilder: (ctx, state) => AppRouter.customTransitionPage(SettingsScreen(), state),
-          )
-        ]),
-      GoRoute(
-        path: AppRoutes.addListItem,
-        pageBuilder: (ctx, state) => AppRouter.customTransitionPage(AddListItemScreen(), state),
-      ),
-      GoRoute(
-        name: AppRoutes.viewListItemName,
-        path: AppRoutes.viewListItemId,
-        pageBuilder: (ctx, state) {
-          final id = state.pathParameters[AppRoutes.id] ?? '';
-          return AppRouter.customTransitionPage(ViewListItemScreen(id: id), state);
-        },
-      ),
-      GoRoute(
-        name: AppRoutes.updateListItemName,
-        path: AppRoutes.updateListItemId,
-        pageBuilder: (ctx, state) {
-          final item = state.extra as ListItemModel;
-          return AppRouter.customTransitionPage(UpdateListItemScreen(item: item), state);
-        },
-      )
-    ]
-  );
-  
+  AppRouter()
+      : router = GoRouter(
+            initialLocation: AppRoutes.login,
+            redirect: (ctx, state) {
+              final isAuthenticated = FirebaseAuth.instance.currentUser != null;
+              final isLoggingIn = state.uri.toString() == AppRoutes.login;
+              if (!isAuthenticated && !isLoggingIn) {
+                return AppRoutes.login;
+              }
+              if (isAuthenticated && isLoggingIn) {
+                return AppRoutes.home;
+              }
+              return null;
+            },
+            routes: [
+              GoRoute(
+                path: AppRoutes.login,
+                pageBuilder: (ctx, state) =>
+                    AppRouter.customTransitionPage(LoginScreen(), state),
+              ),
+              ShellRoute(
+                  builder: (context, state, child) {
+                    final url = state.uri.toString();
+                    final String pageTitle = AppRoutes.titles[url] ?? 'App';
+                    return Scaffold(
+                      appBar: MyAppBar(title: pageTitle),
+                      body: AnimatedSwitcher(
+                        duration: Durations.short1,
+                        child: child,
+                      ),
+                      bottomNavigationBar: MyBottomAppBar(),
+                      floatingActionButton: url == AppRoutes.home
+                          ? FloatingActionButton(
+                              onPressed: () => handleAddItem(context),
+                              child: Icon(Icons.add),
+                            )
+                          : null,
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                        path: AppRoutes.home,
+                        pageBuilder: (ctx, state) =>
+                            AppRouter.customTransitionPage(
+                                ListScreen(), state)),
+                    GoRoute(
+                      path: AppRoutes.settings,
+                      pageBuilder: (ctx, state) =>
+                          AppRouter.customTransitionPage(
+                              SettingsScreen(), state),
+                    )
+                  ]),
+              GoRoute(
+                path: AppRoutes.addListItem,
+                pageBuilder: (ctx, state) =>
+                    AppRouter.customTransitionPage(AddListItemScreen(), state),
+              ),
+              GoRoute(
+                name: AppRoutes.viewListItemName,
+                path: AppRoutes.viewListItemId,
+                pageBuilder: (ctx, state) {
+                  final id = state.pathParameters[AppRoutes.id] ?? '';
+                  return AppRouter.customTransitionPage(
+                      ViewListItemScreen(id: id), state);
+                },
+              ),
+              GoRoute(
+                name: AppRoutes.updateListItemName,
+                path: AppRoutes.updateListItemId,
+                pageBuilder: (ctx, state) {
+                  final item = state.extra as ListItemModel;
+                  return AppRouter.customTransitionPage(
+                      UpdateListItemScreen(item: item), state);
+                },
+              )
+            ]);
+
   static void handleAddItem(BuildContext ctx) {
-    if(ctx.mounted){
+    if (ctx.mounted) {
       ctx.push(AppRoutes.addListItem);
     }
   }
 
-  static CustomTransitionPage customTransitionPage(Widget page, GoRouterState state){
+  static CustomTransitionPage customTransitionPage(
+      Widget page, GoRouterState state) {
     return CustomTransitionPage(
-      key: state.pageKey,
-      child: page,
-      transitionDuration: Durations.medium2,
-      transitionsBuilder: (ctx, animation, secondaryAnimation, child) {
-        const begin = Offset(1.0, 0.0);
-            const end = Offset.zero;
-            const curve = Curves.easeInOut;
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            var offsetAnimation = animation.drive(tween);
-            var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(animation);
-            // return FadeTransition(opacity: fadeAnimation, child: child);
-            return SlideTransition(position: offsetAnimation, child: child);
-      }
-    );
+        key: state.pageKey,
+        child: page,
+        transitionDuration: Durations.medium2,
+        transitionsBuilder: (ctx, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0);
+          const end = Offset.zero;
+          const curve = Curves.easeInOut;
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+          var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(animation);
+          // return FadeTransition(opacity: fadeAnimation, child: child);
+          return SlideTransition(position: offsetAnimation, child: child);
+        });
   }
-
 }
