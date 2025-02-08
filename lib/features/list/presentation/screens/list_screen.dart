@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:normal_list/app/router.dart';
+import 'package:normal_list/features/list/data/list_item_model.dart';
 import 'package:normal_list/features/list/data/list_service.dart';
 
 class ListScreen extends StatelessWidget {
@@ -35,6 +37,62 @@ class ListScreen extends StatelessWidget {
     );
   }
 
+  void _handleOnTapText(BuildContext ctx, String? textToCopy) {
+    if (textToCopy == null) return;
+    if (ctx.mounted) {
+      Clipboard.setData(ClipboardData(text: textToCopy));
+      ScaffoldMessenger.of(ctx)
+          .showSnackBar(SnackBar(content: Text('Copied: $textToCopy')));
+    }
+  }
+
+  Future<bool?> _showItemViewDialog(
+      BuildContext ctx, ListItemModel item) async {
+    return showDialog(
+        context: ctx,
+        builder: (context) {
+          return AlertDialog(
+            title: GestureDetector(
+              onTap: () => _handleOnTapText(context, item.code),
+              child: Text(
+                item.code,
+                style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  item.title,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 30),
+                GestureDetector(
+                  onTap: () => _handleOnTapText(context, item.url),
+                  child: Text(
+                    item.url ?? '---',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => context.pop(false),
+                child: Text('Close'),
+              ),
+              ElevatedButton(
+                onPressed: () => handleClickItem(ctx, item.id),
+                child: Text('View'),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -65,7 +123,7 @@ class ListScreen extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(16),
                       onTap: () {
-                        handleClickItem(context, item.id);
+                        _showItemViewDialog(context, item);
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
