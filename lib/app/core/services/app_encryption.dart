@@ -6,8 +6,8 @@ class AppEncryption {
 
   static late String secret;
 
-  static Key getKeyFromSecret(String _secret) =>
-      Key.fromUtf8(_secret.padRight(32, '*').substring(0, 32));
+  static Key getKeyFromSecret(String secret) =>
+      Key.fromUtf8(secret.padRight(32, '*').substring(0, 32));
 
   static Encrypter getEncrypter(String secret) {
     final key = getKeyFromSecret(secret);
@@ -17,8 +17,8 @@ class AppEncryption {
 
   static IV getIV() => IV.fromBase64(dotenv.env['ENCRYPTER_IV']!);
 
-  factory AppEncryption(String _secret) {
-    secret = _secret;
+  factory AppEncryption(String secret) {
+    secret = secret;
     return _appEncryption;
   }
 

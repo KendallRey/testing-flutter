@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:normal_list/app/core/services/app_encryption.dart';
 import 'package:normal_list/app/core/utils/validators.dart';
 import 'package:normal_list/app/core/widgets/button.dart';
 import 'package:normal_list/app/core/widgets/text_form_field.dart';

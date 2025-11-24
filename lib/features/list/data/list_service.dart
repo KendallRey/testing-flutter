@@ -51,6 +51,47 @@ class ListService {
         }).toList());
   }
 
+  Future<List<ListItemModel>> getUserItemsDecryptedPaginated({
+    required String userId,
+    DocumentSnapshot? startAfter,
+    int limit = 20,
+  }) async {
+    Query<Object?> query = getUserListItems(userId)
+        .orderBy(Model.createdAtKey, descending: true)
+        .limit(limit);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    final snapshot = await query.get();
+
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      return ListItemModel.fromMapDecrypted({
+        Model.idKey: doc.id,
+        ...data,
+      });
+    }).toList();
+  }
+
+  Future<QueryDocumentSnapshot<Object?>> getUserItemsPaginatedLastDoc({
+    required String userId,
+    DocumentSnapshot? startAfter,
+    int limit = 20,
+  }) async {
+    Query<Object?> query = getUserListItems(userId)
+        .orderBy(Model.createdAtKey, descending: true)
+        .limit(limit);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    final snapshot = await query.get();
+    return snapshot.docs.last;
+  }
+
   Stream<ListItemModel?> getUserItem(String userId, String id) {
     final documentReference = getUserListItems(userId).doc(id);
     return documentReference.snapshots().map((snapshot) {
