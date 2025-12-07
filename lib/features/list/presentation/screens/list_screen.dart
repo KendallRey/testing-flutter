@@ -61,10 +61,6 @@ class _ListScreenState extends State<ListScreen> {
 
       _lastDoc = lastDoc;
     }
-    print("======================");
-    print(newItems.last.title);
-    print(_lastDoc?.data());
-    print("======================");
     setState(() {
       _items.addAll(newItems);
       if (newItems.length < _limit) _hasMore = false;
