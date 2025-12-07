@@ -57,9 +57,6 @@ class AppRouter {
               if (!isAuthenticated && !isLoggingIn) {
                 return AppRoutes.login;
               }
-              if (isAuthenticated && isLoggingIn) {
-                return AppRoutes.home;
-              }
               return null;
             },
             routes: [
