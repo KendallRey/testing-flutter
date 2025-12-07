@@ -84,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ctx.read<AppProvider>().setSecret(secretValue);
         final prefs = await SharedPreferences.getInstance();
         prefs.setString(PreferenceKeys.secret, secretValue);
+        AppEncryption.setKey(secretValue);
         AppEncryption(secretValue);
       }
       if (!ctx.mounted) return;

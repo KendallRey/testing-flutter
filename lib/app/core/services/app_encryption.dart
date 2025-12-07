@@ -22,6 +22,10 @@ class AppEncryption {
     return _appEncryption;
   }
 
+  static void setKey(String secretKey) {
+    secret = secretKey;
+  }
+
   AppEncryption._internal();
 
   static String encrypt(String? plainText) {
