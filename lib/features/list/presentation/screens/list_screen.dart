@@ -131,6 +131,14 @@ class _ListScreenState extends State<ListScreen> {
                     textAlign: TextAlign.center,
                   ),
                 ),
+                if (item.url != null && item.url!.isNotEmpty)
+                  IconButton(
+                    icon: const Icon(Icons.open_in_browser),
+                    onPressed: () {
+                      context.push(
+                          '${AppRoutes.webView}?url=${Uri.encodeComponent(item.url!)}');
+                    },
+                  ),
               ],
             ),
             actions: [

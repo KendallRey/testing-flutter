@@ -12,6 +12,7 @@ import 'package:normal_list/features/list/presentation/screens/list_screen.dart'
 import 'package:normal_list/features/list/presentation/screens/update_list_item_screen.dart';
 import 'package:normal_list/features/list/presentation/screens/view_list_item_screen.dart';
 import 'package:normal_list/features/settings/presentation/screens/settings_screen.dart';
+import 'package:normal_list/features/web_view/presentation/screens/web_screen.dart';
 
 class AppRoutes {
   static const String id = 'id';
@@ -24,6 +25,7 @@ class AppRoutes {
   static const String updateListItemName = 'update-list-item';
   static const String viewListItemId = '/view-list-item/:${AppRoutes.id}';
   static const String updateListItemId = '/update-list-item/:${AppRoutes.id}';
+  static const String webView = '/web-view';
 
   static const String titleHome = 'My List';
   static const String titleLogin = 'Login';
@@ -31,6 +33,7 @@ class AppRoutes {
   static const String titleAddListItem = 'Add List Item';
   static const String titleUpdateListItem = 'Update List Item';
   static const String titleViewListItem = 'View Item';
+  static const String titleWebView = 'Viewing';
 
   static HashMap<String, int> indexes = HashMap<String, int>.from({
     AppRoutes.home: 0,
@@ -42,6 +45,7 @@ class AppRoutes {
     AppRoutes.settings: AppRoutes.titleSettings,
     AppRoutes.addListItem: AppRoutes.titleAddListItem,
     AppRoutes.viewListItemId: AppRoutes.titleViewListItem,
+    AppRoutes.webView: AppRoutes.titleWebView,
   });
 }
 
@@ -95,7 +99,14 @@ class AppRouter {
                       pageBuilder: (ctx, state) =>
                           AppRouter.customTransitionPage(
                               SettingsScreen(), state),
-                    )
+                    ),
+                    GoRoute(
+                        path: AppRoutes.webView,
+                        pageBuilder: (ctx, state) {
+                          final url = state.uri.queryParameters['url']!;
+                          return AppRouter.customTransitionPage(
+                              WebViewScreen(url: url), state);
+                        })
                   ]),
               GoRoute(
                 path: AppRoutes.addListItem,
